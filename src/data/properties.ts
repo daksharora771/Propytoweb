@@ -1,4 +1,4 @@
-// /src/data/properties.ts
+// /data/properties.ts
 
 export const properties = [
   {
@@ -6,25 +6,23 @@ export const properties = [
     title: "2BHK 2Baths",
     price: 17000,
     area: 1290,
-    areaUnit: "sq.ft",
-    location: "Shubham Heights, Jahangirabad, Surat",
-    postedBy: "GJ5 Property",
+    areaUnit: "sqft",
+    location: "Shubham Heights, Jahangirabad, Surat, Gujarat",
+    postedBy: "Satish Vishwakarma",
     bedrooms: 2,
     bathrooms: 2,
     balcony: 1,
     furnishing: "Unfurnished",
     availableFrom: "Immediate",
-    status: "Ready to move",
-    carpetArea: "119.8 sqm",
+    status: "Ready To Move",
+    carpetArea: "119.8 sq.m",
     highlights: [
       "Gated Society",
-      "Vitrified Flooring",
       "Corner Property",
-      "Pet Friendly",
+      "Vitrified Flooring",
+      "Pet Friendly"
     ],
     imageUrl: "/placeholder.jpg",
-    postedTime: "Yesterday",
-    features: ["Lift(s)", "Park", "Rain Water Harvesting"],
     floorNumber: 8,
     totalFloors: 13,
     facing: "South-West",
@@ -38,35 +36,23 @@ export const properties = [
     noticePeriod: "1 Month",
     utilityChargesIncluded: false,
     powerBackup: "Partial",
-    propertyAge: "1 to 5 Years Old",
+    propertyAge: "1 to 5 Years",
     propertyCode: "I76592391",
-    address: "607, Jahangirabad, Surat, Gujarat",
-    description: "Explore this amicable Shubham Heights in Surat...",
-    name: "Satish Vishwakarma",
-    companyName: "GJ5 Property",
-    logoUrl: "/dealer-logo.png",
-    reraRegistered: true,
-    propertiesListed: 56,
-    verifiedProperties: 51,
-    localities: ["Jahangirabad", "Palanpur", "PAL", "LP Savani", "Magdalla"],
-    about:
-      "Founded in 2016 by Satish Vishwakarma, GJ5 Property specializes in Surat real estate.",
-    Adderessname: "Jahangirabad",
+    address: "607, Jahangirabad, Surat",
+    description: "Explore this amicable Shubham Heights of Jahangirabad in Surat!",
     city: "Surat",
     pincode: "395005",
     rank: 9,
     growth: 1.4,
     whatsGreat: [
-      "Mid-income ready-to-move apartments",
-      "Ugat Road and Ugat Canal Road nearby",
-      "8 km from Surat Railway Station",
-      "18 km from Surat International Airport",
+      "Mid-budget ready-to-move apartments",
+      "Good road connectivity",
+      "8km from Surat Railway Station",
+      "Airport accessible within 18km"
     ],
-    needsAttention: ["Parks lagging maintenance"],
-    bhk: "2",
-    postedDate: "05th Apr, 2025",
-    projectName: "Ankur Heights",
+    needsAttention: [
+      "Some parks need better maintenance"
+    ],
+    projectName: "Shubham Heights"
   },
-
-  // Add more dummy properties if needed
 ];

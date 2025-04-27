@@ -148,7 +148,7 @@ export default function MobileFilters({ isOpen, onClose, filters, setFilters }: 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50">
       <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute bottom-0 w-full bg-white rounded-t-xl pointer-events-auto max-h-[90vh] overflow-hidden">
+        <div className="absolute bottom-0 w-full rounded-t-xl pointer-events-auto max-h-[90vh] overflow-hidden">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b">
             <h2 className="text-lg font-medium">Filters</h2>
@@ -165,7 +165,7 @@ export default function MobileFilters({ isOpen, onClose, filters, setFilters }: 
                   key={section}
                   className={`w-full p-4 text-left ${
                     activeSection === section
-                      ? 'bg-blue-50 border-l-4 border-blue-600'
+                      ? ' border-l-4 border-[#e5a526]'
                       : ''
                   }`}
                   onClick={() => setActiveSection(section)}

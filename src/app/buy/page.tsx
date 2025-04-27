@@ -60,6 +60,7 @@ export default function BuyPage() {
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
 
+  // Filter properties based on filters
   const filteredProperties = sampleProperties.filter(property => {
     const price = typeof property.price === 'number' ? property.price : 0;
     if (price < filters.budget.min || price > filters.budget.max) return false;
@@ -93,7 +94,7 @@ export default function BuyPage() {
   return (
     <div className="pb-16 lg:pb-0 !bg-[#0A0A23]">
       {/* Mobile Header */}
-      <div className="lg:hidden sticky top-0 z-40 border-b ">
+      <div className="lg:hidden sticky top-0 z-40 border-b bg-white">
         <div className="flex items-center p-4">
           <button onClick={() => window.history.back()} className="mr-4">
             ←
@@ -126,7 +127,7 @@ export default function BuyPage() {
 
         {/* Mobile Sort Dropdown */}
         {isSortOpen && (
-          <div className="absolute top-full left-0 right-0  border-t shadow-lg z-40">
+          <div className="absolute top-full left-0 right-0 bg-white border-t shadow-lg z-40">
             <button className="w-full p-3 text-left hover:bg-gray-50" onClick={() => { setSortBy('relevance'); setIsSortOpen(false); }}>Relevance</button>
             <button className="w-full p-3 text-left hover:bg-gray-50" onClick={() => { setSortBy('price_low_high'); setIsSortOpen(false); }}>Price - Low to High</button>
             <button className="w-full p-3 text-left hover:bg-gray-50" onClick={() => { setSortBy('price_high_low'); setIsSortOpen(false); }}>Price - High to Low</button>
