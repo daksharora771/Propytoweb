@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+  --gold-300: #FFD700;
+  --gold-500: #D4AF37;
+  --gold-600: #B8860B;
+  --warning-500: #FF6B6B;
+  --warning-600: #FF5252;
+  --warning-700: #FF3D3D;
+}
+
+/* Hide scrollbar for all browsers */
+.no-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --breakpoint-xs: 30rem;
+  --breakpoint-2xl: 100rem;
+  --breakpoint-3xl: 62rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+@layer utilities {
+  .text-gold-300 {
+    color: var(--gold-300);
+  }
+  .text-gold-500 {
+    color: var(--gold-500);
+  }
+  .text-gold-600 {
+    color: var(--gold-600);
+  }
+  .bg-gold-300 {
+    background-color: var(--gold-300);
+  }
+  .bg-gold-500 {
+    background-color: var(--gold-500);
+  }
+  .bg-gold-600 {
+    background-color: var(--gold-600);
+  }
+  .from-gold-500 {
+    --tw-gradient-from: var(--gold-500);
+  }
+  .to-gold-300 {
+    --tw-gradient-to: var(--gold-300);
+  }
+}
+
+.hero-banner {
+  background-image: url('../assets/images/ofc-1.jpg'); /* Your image path */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: absolute;
+  height: 400px;
+  top: 0;
+  left: 0;
+  inset: 0;
+  z-index: -10;
+  content: '';
+  
+}
+
+
+.bnrbtn {
+  backdrop-filter: blur(4px);
+  background: linear-gradient(89.96deg, #ffffff0d 0.03%, hsla(0, 0%, 100%, 0.008) 49.67%, #ffffff0d 99.96%);
+  border: 1px solid hsla(0, 0%, 100%, 0.164);
+  border-radius: 10px;
+  display: inline-flex;
+  padding: 5px;
+}
+
+.footer-seperator-line {
+  background-image: linear-gradient(30deg, #0000, #e5a526 50%, #0000);
+  height: 1.5px;
+  margin-bottom: 8px;
+  margin-top: 8px;
+  padding-top: 0;
+  width: 100%;
+}
