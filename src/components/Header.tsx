@@ -38,9 +38,9 @@ const Header = () => {
             {/* User Icon */}
             <div className="relative">
               <div
-                onClick={() => setDropdownOpen(!dropdownOpen)}
+                onClick={() => setDropdownOpen(true)}
                 onMouseEnter={() => setDropdownOpen(true)}
-                onMouseLeave={() => setDropdownOpen(false)}
+                // onMouseLeave={() => setDropdownOpen(dropdownOpen ? false : true)}
                 className="cursor-pointer p-2 bg-[#FFD700] rounded-full text-black hover:bg-[#FFC300]"
               >
                 <User className="w-6 h-6" />
