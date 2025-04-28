@@ -1,27 +1,25 @@
 // /app/property/[id]/page.tsx
 
-import { notFound } from 'next/navigation';
-import PropertyDetailsPage from '@/components/PropertyDetailsPage'; // Your client component
-import { properties } from '@/data/properties'; // Import properties array
-import { recommendations } from '@/data/recommendations'; // Import recommendations array
+import React from 'react';
+import { properties } from '@/data/properties';
+import PropertyCardRent from '@/components/PropertyCardRent';
 
 interface PageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
-// 🚀 MAKE THIS FUNCTION `async`
 export default async function PropertyDetailPage({ params }: PageProps) {
-  const propertyId = parseInt(params.id, 10);
+  const resolvedParams = await params;
+  const propertyId = parseInt(resolvedParams.id, 10);
   const property = properties.find((p) => p.id === propertyId);
 
   if (!property) {
-    notFound(); // Show 404 page if property not found
+    return <div>Property not found</div>;
   }
 
   return (
-    <PropertyDetailsPage 
-      property={property}
-      recommendations={recommendations}
-    />
+    <div className="min-h-screen bg-[#0A0A23] p-4">
+      <PropertyCardRent property={property} />
+    </div>
   );
 }

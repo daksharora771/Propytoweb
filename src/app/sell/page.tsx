@@ -7,46 +7,36 @@ import SellForm from "@/assets/images/sellForm.png";
 import { useRouter } from "next/navigation";
 
 const Sell = () => {
-  const [selectedType, setSelectedType] = useState("Residential");
+  const [selectedType, setSelectedType] = useState("residential");
   const [lookingFor, setLookingFor] = useState("Sell");
   const [selectedProperty, setSelectedProperty] = useState<string | null>(null);
-  const [categoryList, setCategoryList] = useState<string[]>([]);
+  const [subTypes, setSubTypes] = useState<string[]>([]);
   const [error, setError] = useState("");
 
   const router = useRouter();
 
-  const residential = [
-    "Flat/Apartment",
-    "Independent House / Villa",
-    "Independent / Builder Floor",
-    "Plot / Land",
-    "1 RK/ Studio Apartment",
-    "Serviced Apartment",
-    "Farmhouse",
-    "Other",
-  ];
-
-  const commercial = [
-    "Office",
-    "Retail",
-    "Plot / Land",
-    "Storage",
-    "Industry",
-    "Hospitality",
-    "Other",
-  ];
-
   useEffect(() => {
-    if (selectedType === "Residential") {
-      setCategoryList(
-        lookingFor === "Rent / Lease"
-          ? residential.filter((item) => item !== "Plot / Land")
-          : residential
-      );
-    } else {
-      setCategoryList(commercial);
-    }
-  }, [selectedType, lookingFor]);
+    const residential = [
+      'Apartment',
+      'Independent House/Villa',
+      'Residential Land',
+      'Independent/Builder Floor',
+      'Farm House',
+      '1 RK/ Studio Apartment'
+    ];
+
+    const commercial = [
+      'Office Space',
+      'Shop/Showroom',
+      'Commercial Land',
+      'Warehouse/Godown',
+      'Industrial Building',
+      'Hotel/Resort',
+      'Other Commercial'
+    ];
+
+    setSubTypes(selectedType === 'residential' ? residential : commercial);
+  }, [selectedType]);
 
   const handleStartNow = () => {
     if (lookingFor && selectedType && selectedProperty) {
@@ -101,12 +91,12 @@ const Sell = () => {
       {/* Right Form Section */}
       <div className="w-full 3xl:w-1/2 bg-gray-900 p-6 3xl:p-8 rounded-xl border border-gray-700 shadow-lg space-y-6">
         <h2 className="text-xl 3xl:text-2xl font-semibold text-center 3xl:text-left">
-          Start posting your property, it’s free
+          Start posting your property, it is free
         </h2>
 
         {/* Looking for */}
         <div className="space-y-2">
-          <label className="block text-sm mb-1 text-gray-400">You're looking to ...</label>
+          <label className="block text-sm mb-1 text-gray-400">You are looking to ...</label>
           <div className="flex flex-wrap gap-3">
             {["Sell", "Rent / Lease"].map((type) => (
               <button
@@ -129,9 +119,9 @@ const Sell = () => {
 
         {/* Property Type */}
         <div className="space-y-2">
-          <label className="block text-sm mb-1 text-gray-400">And it's a ...</label>
+          <label className="block text-sm mb-1 text-gray-400">And it is a ...</label>
           <div className="flex gap-6 flex-wrap">
-            {["Residential", "Commercial"].map((cat) => (
+            {["residential", "commercial"].map((cat) => (
               <label key={cat} className="flex items-center gap-2 text-sm cursor-pointer">
                 <input
                   type="radio"
@@ -151,7 +141,7 @@ const Sell = () => {
 
         {/* Sub-Category Selection */}
         <div className="grid grid-cols-2 3xl:grid-cols-3 gap-3">
-          {categoryList.map((type) => (
+          {subTypes.map((type) => (
             <div
               key={type}
               onClick={() => setSelectedProperty(type)}

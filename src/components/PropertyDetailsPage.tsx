@@ -13,29 +13,50 @@ const tabs = [
   "Recommendations",
 ];
 
-// ⬇️ ADD INTERFACE
-interface PropertyDetailsPageProps {
-  property: any;
-  recommendations: {
-    imageUrl: string;
-    title: string;
-    price: number;
-    bhk: string;
-    location: string;
-    postedBy: string;
-    postedDate: string;
-    projectName: string;
-  }[];
+interface Property {
+  id: number;
+  title: string;
+  price: number;
+  bhk: string;
+  location: string;
+  area: string;
+  postedBy: string;
+  postedDate: string;
+  projectName: string;
+  images: string[];
+  description: string;
+  amenities: string[];
+  dealer: {
+    name: string;
+    phone: string;
+    email: string;
+  };
 }
 
-const PropertyDetailsPage = ({ property, recommendations }: PropertyDetailsPageProps) => {
+interface Recommendation {
+  imageUrl: string;
+  title: string;
+  price: number;
+  bhk: string;
+  location: string;
+  postedBy: string;
+  postedDate: string;
+  projectName: string;
+}
+
+interface PropertyDetailsPageProps {
+  property: Property;
+  recommendations: Recommendation[];
+}
+
+const PropertyDetailsPage = ({ property }: PropertyDetailsPageProps) => {
   const [activeTab, setActiveTab] = useState("Overview");
 
   return (
     <div className="max-w-7xl mx-auto p-4">
       {/* Breadcrumb */}
       <div className="text-sm text-gray-400 mb-4">
-        Home / Property for Rent in Surat / 2 BHK Flats
+        Home / Property for Rent in Surat / {property.bhk}
       </div>
 
       {/* Header */}
@@ -44,10 +65,10 @@ const PropertyDetailsPage = ({ property, recommendations }: PropertyDetailsPageP
         <div className="space-y-2">
           <div className="flex items-center gap-4">
             <AiOutlineCheckCircle className="text-green-500" />
-            <span className="text-2xl font-bold">₹17,000</span>
+            <span className="text-2xl font-bold">₹{property.price}</span>
             <span className="text-sm text-gray-500">Per Month</span>
           </div>
-          <h1 className="text-xl font-bold text-white">2BHK 2Baths</h1>
+          <h1 className="text-xl font-bold text-white">{property.title}</h1>
           <p className="text-gray-400 text-sm">
             Flat/Apartment for Rent in Shubham Heights, Jahangirabad, Surat, Gujarat
           </p>
@@ -109,7 +130,7 @@ const PropertyDetailsPage = ({ property, recommendations }: PropertyDetailsPageP
             </div>
             <div className="text-right">
               <p className="text-xs text-gray-400">Rent</p>
-              <p className="text-yellow-400 font-bold">₹17,000</p>
+              <p className="text-yellow-400 font-bold">₹{property.price}</p>
             </div>
           </div>
 
@@ -117,7 +138,7 @@ const PropertyDetailsPage = ({ property, recommendations }: PropertyDetailsPageP
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
               <BiArea />
-              <p className="text-sm">Carpet area: 1290 sq.ft.</p>
+              <p className="text-sm">Carpet area: {property.area}</p>
             </div>
             <p className="text-xs text-gray-400">(119.8 sq.m)</p>
           </div>
@@ -338,7 +359,7 @@ const ExploreLocalityTab = () => (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {/* What's Great */}
       <div className="bg-[#12122d] border border-gray-700 rounded-lg p-6 space-y-4">
-        <h3 className="text-lg font-bold text-white mb-2">👍 What's Great Here!</h3>
+        <h3 className="text-lg font-bold text-white mb-2">👍 What is Great Here!</h3>
         <ul className="space-y-2 text-sm text-gray-400">
           <li>🏡 Mid-budget ready-to-move apartments</li>
           <li>🛣️ Good road connectivity via Ugat Road, Ambedkar Road</li>

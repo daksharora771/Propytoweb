@@ -1,16 +1,37 @@
 'use client'
 import React, { useState } from 'react';
 import { IoClose } from 'react-icons/io5';
-import { FiSearch } from 'react-icons/fi';
+// import { FiSearch } from 'react-icons/fi';
+
+interface FilterOptions {
+  budget: { min: number; max: number };
+  bedrooms: number[];
+  propertyType: string[];
+  availableFor: string[];
+  postedBy: string[];
+  furnishingStatus: string[];
+  localities: string[];
+  projectsSocieties: string[];
+  bathrooms: number[];
+  amenities: string[];
+  area: { min: number; max: number };
+  availableFrom: string[];
+  propertyAge: string[];
+  owner: boolean;
+  verified: boolean;
+  furnished: boolean;
+  withPhotos: boolean;
+  withVideos: boolean;
+}
 
 interface MobileFiltersProps {
   isOpen: boolean;
   onClose: () => void;
-  filters: any;
-  setFilters: (filters: any) => void;
+  filters: FilterOptions;
+  setFilters: (filters: FilterOptions) => void;
 }
 
-export default function MobileFilters({ isOpen, onClose, filters, setFilters }: MobileFiltersProps) {
+export default function MobileFilters({ isOpen, onClose}: MobileFiltersProps) {
   const [activeSection, setActiveSection] = useState('Quick Filters');
 
   const sections = [

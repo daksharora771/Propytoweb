@@ -7,7 +7,6 @@ import PropertyCardRent from '@/components/PropertyCardRent';
 import { properties } from '@/data/properties'; // ✅ Correct import
 
 const PropertyFilters = dynamic(() => import('@/components/PropertyFilters'), { ssr: false });
-const PropertyCard = dynamic(() => import('@/components/PropertyCard'), { ssr: false });
 const MobileFilters = dynamic(() => import('@/components/MobileFilters'), { ssr: false });
 // const BottomNavigation = dynamic(() => import('@/components/BottomNavigation'), { ssr: false });
 
@@ -36,7 +35,7 @@ interface Filters {
 
 export default function BuyPage() {
   const [filters, setFilters] = useState<Filters>({
-    budget: { min: 0, max: 100000000 },
+    budget: { min: 0, max: 10000000 },
     bedrooms: [],
     propertyType: [],
     availableFor: [],
@@ -91,6 +90,10 @@ export default function BuyPage() {
     }
   });
 
+  const handleFilterChange = (newFilters: Filters) => {
+    setFilters(newFilters);
+  };
+
   return (
     <div className="pb-16 lg:pb-0 !bg-[#0A0A23]">
       {/* Mobile Header */}
@@ -140,7 +143,7 @@ export default function BuyPage() {
       <div className="flex min-h-screen bg-black">
         {/* Desktop Filters */}
         <div className="hidden lg:block w-1/4 p-4">
-          <PropertyFilters filters={filters} setFilters={setFilters} />
+          <PropertyFilters filters={filters} setFilters={handleFilterChange} />
         </div>
 
         {/* Main Content */}
@@ -164,7 +167,7 @@ export default function BuyPage() {
         isOpen={isMobileFiltersOpen}
         onClose={() => setIsMobileFiltersOpen(false)}
         filters={filters}
-        setFilters={setFilters}
+        setFilters={handleFilterChange}
       />
     </div>
   );

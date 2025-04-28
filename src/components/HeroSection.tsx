@@ -9,10 +9,8 @@ import {
   ChevronDown,
   CheckSquare,
   Square,
-  icons,
 } from "lucide-react";
 import Button from "./ui/Button";
-import Image from "next/image";
 import Buy from "@/assets/images/buy.jpg";
 import Rent from "@/assets/images/rent.jpg";
 import Sell from "@/assets/images/sell.jpg";

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import Propyro from "@/assets/images/propyto.jpg";
 import Button from "./ui/Button";
 import { User } from "lucide-react"; // 👈 Importing User icon
@@ -16,7 +17,7 @@ const Header = () => {
           {/* Logo */}
           <div className="w-1/2 3xl:w-1/4 text-left">
             <div className="logo">
-              <a href="/">
+              <Link href="/">
                 <Image
                   src={Propyro}
                   alt="logo"
@@ -25,7 +26,7 @@ const Header = () => {
                   className="block"
                   priority
                 />
-              </a>
+              </Link>
             </div>
           </div>
 

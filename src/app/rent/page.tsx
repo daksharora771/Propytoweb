@@ -7,7 +7,6 @@ import PropertyCardRent from '@/components/PropertyCardRent';
 import { properties } from '@/data/properties'; // ✅ Correct import
 
 const PropertyFilters = dynamic(() => import('@/components/PropertyFilters'), { ssr: false });
-const PropertyCard = dynamic(() => import('@/components/PropertyCard'), { ssr: false });
 const MobileFilters = dynamic(() => import('@/components/MobileFilters'), { ssr: false });
 // const BottomNavigation = dynamic(() => import('@/components/BottomNavigation'), { ssr: false });
 

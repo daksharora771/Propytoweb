@@ -29,19 +29,19 @@ interface PropertyFiltersProps {
 
 export default function PropertyFilters({ filters, setFilters }: PropertyFiltersProps) {
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
-    budget: true,
-    bedrooms: true,
-    propertyType: true,
-    availableFor: true,
-    postedBy: true,
-    furnishingStatus: true,
-    localities: true,
-    projectsSocieties: true,
-    bathrooms: true,
-    amenities: true,
-    area: true,
-    availableFrom: true,
-    propertyAge: true,
+    budget: false,
+    bedrooms: false,
+    propertyType: false,
+    availableFor: false,
+    postedBy: false,
+    furnishingStatus: false,
+    localities: false,
+    projectsSocieties: false,
+    bathrooms: false,
+    amenities: false,
+    area: false,
+    availableFrom: false,
+    propertyAge: false,
   });
 
   const toggleSection = (section: string) => {
@@ -55,9 +55,9 @@ export default function PropertyFilters({ filters, setFilters }: PropertyFilters
     setFilters({
       ...filters,
       [section]: Array.isArray(filters[section])
-        ? (filters[section] as Array<any>).includes(value)
-          ? (filters[section] as Array<any>).filter(item => item !== value)
-          : [...(filters[section] as Array<any>), value]
+        ? (filters[section] as Array<string | number>).includes(value)
+          ? (filters[section] as Array<string | number>).filter(item => item !== value)
+          : [...(filters[section] as Array<string | number>), value]
         : filters[section]
     });
   };

@@ -1,5 +1,5 @@
-import Image from "next/image";
-import Header from "@/components/Header";
+// import Image from "next/image";
+// import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import RecommendedProperties from "@/components/RecommendedProperties";
 import AboutSection from "@/components/AboutSection";

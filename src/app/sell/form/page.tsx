@@ -35,23 +35,6 @@ const commercial = [
   "Other",
 ];
 
-const extraOptionMap = {
-  Office: [
-    "Ready to move office space",
-    "Bare shell office space",
-    "Co-working office space",
-  ],
-  Retail: ["Showroom", "Shop", "Mall Space", "Other Retail Space"],
-  "Plot / Land": ["Commercial Land", "Industrial Plot", "Agricultural Land"],
-  Storage: ["Warehouse", "Cold Storage", "Godown"],
-  Industry: ["Manufacturing Unit", "Factory", "Industrial Building"],
-  Hospitality: ["Hotel", "Resort", "Guest House"],
-  Other: ["Custom Property Type", "Others (Specify Later)"],
-};
-
-type CategoryType = keyof typeof extraOptionMap;
-
-
 const SellFormPage = () => {
     
   const [currentStep, setCurrentStep] = useState(0);
@@ -122,8 +105,8 @@ const SellFormPage = () => {
   }, [selectedType, lookingFor]);
 
 //   useEffect(() => {
-//     if (selectedCategory && extraOptionMap[selectedCategory]) {
-//       setExtraOptions(extraOptionMap[selectedCategory]);
+//     if (selectedCategory && propertyOptions[selectedCategory]) {
+//       setExtraOptions(propertyOptions[selectedCategory]);
 //     } else {
 //       setExtraOptions([]);
 //     }
@@ -233,7 +216,7 @@ const SellFormPage = () => {
         {currentStep === 0 && (
           <div className="space-y-6">
             <div>
-              <p className="text-gray-400 mb-2">I'm looking to</p>
+              <p className="text-gray-400 mb-2">I am looking to</p>
               <div className="flex gap-4">
                 {["Sell", "Rent / Lease"].map((option) => (
                   <button
@@ -695,7 +678,7 @@ const SellFormPage = () => {
 
               {/* No Video Warning */}
               <div className="bg-yellow-600/20 border border-yellow-400 text-yellow-400 rounded-md p-4 text-sm">
-                Don’t have a Video? We can help you create one with our Paid
+                Do not have a Video? We can help you create one with our Paid
                 Plans, Contact to Upgrade
               </div>
             </div>
