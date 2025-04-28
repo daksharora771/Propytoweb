@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import Propyro from "@/assets/images/propyto.jpg";
+import Propyro from "@/assets/images/icon_logo.png";
 import Button from "./ui/Button";
-import { User } from "lucide-react"; // 👈 Importing User icon
+import { User } from "lucide-react";
 import { useState } from "react";
 
 const Header = () => {
@@ -21,8 +21,8 @@ const Header = () => {
                 <Image
                   src={Propyro}
                   alt="logo"
-                  width={64}
-                  height={64}
+                  width={74}
+                  height={74}
                   className="block"
                   priority
                 />
@@ -40,7 +40,6 @@ const Header = () => {
               <div
                 onClick={() => setDropdownOpen(true)}
                 onMouseEnter={() => setDropdownOpen(true)}
-                // onMouseLeave={() => setDropdownOpen(dropdownOpen ? false : true)}
                 className="cursor-pointer p-2 bg-[#FFD700] rounded-full text-black hover:bg-[#FFC300]"
               >
                 <User className="w-6 h-6" />
@@ -67,7 +66,7 @@ const Header = () => {
                   </a>
                   <button
                     onClick={() => console.log("Logout clicked")}
-                    className="w-full text-left px-4 py-2 text-gray-200 hover:bg-[#FFD700]/20 hover:text-white"
+                    className="w-full cursor-pointer text-left px-4 py-2 text-gray-200 hover:bg-[#FFD700]/20 hover:text-white"
                   >
                     Logout
                   </button>
