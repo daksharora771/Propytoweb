@@ -1,6 +1,15 @@
 'use client';
 
 import { Toaster as Sonner } from 'sonner';
+import type { CSSProperties } from 'react';
+
+// Define extended options type that includes success and error styles
+type ExtendedToastOptions = {
+  style?: CSSProperties;
+  success?: { style?: CSSProperties };
+  error?: { style?: CSSProperties };
+  duration?: number;
+};
 
 export function Toaster() {
   return (
@@ -27,7 +36,7 @@ export function Toaster() {
           },
         },
         duration: 5000,
-      }}
+      } as ExtendedToastOptions}
     />
   );
 } 
