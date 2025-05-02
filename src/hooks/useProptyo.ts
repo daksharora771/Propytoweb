@@ -3,7 +3,7 @@ import { useReadContract, useWriteContract, useWaitForTransactionReceipt, useAcc
 import { PropytoRegistryABI } from '@/config/abis/PropytoRegistry';
 import { USDTABI } from '@/config/abis/USDT';
 import { CONTRACTS, DEFAULT_CHAIN_ID } from '@/config/contracts';
-import { parseUnits } from 'ethers';
+import { parseUnits, formatUnits } from 'ethers';
 import { Step } from '@/components/ui/TransactionModal';
 import { decodeEventLog, getAbiItem } from 'viem';
 
@@ -182,11 +182,23 @@ export function useProptyoListing() {
   
   // Initialize transaction modal
   const initializeTransaction = (withPartialOwnership: boolean) => {
+    // Format the listing fee to show in the modal
+    let listingFeeFormatted = "10"; // Default to 10 USDT
+    
+    try {
+      // Only try to use marketplace config if it exists and has a valid listingFee
+      if (marketplaceConfig && marketplaceConfig.listingFee) {
+        listingFeeFormatted = formatUnits(marketplaceConfig.listingFee, 18);
+      }
+    } catch (error) {
+      console.warn("Error formatting listing fee, using default:", error);
+    }
+    
     const steps: Step[] = [
       {
         id: 'approve',
         title: 'Approve USDT',
-        description: 'Approving USDT for the listing fee',
+        description: `Approving ${listingFeeFormatted} USDT for the listing fee`,
         status: 'pending'
       },
       {
@@ -635,6 +647,12 @@ export function useProptyoListing() {
     console.debug("Address:", address);
     console.debug("USDT:", usdtAddress);
     
+    // Check for required values
+    if (!address) {
+      console.error("Wallet address is required but not available");
+      return;
+    }
+    
     // Ensure partialOwnership is properly initialized if enabled
     if (formData.isPartiallyOwnEnabled && !formData.partialOwnership) {
       console.log("WARNING: Fixing missing partialOwnership in form data");
@@ -651,11 +669,6 @@ export function useProptyoListing() {
     // Debug log for partial ownership status
     console.log("FORM DATA - Partial Ownership Enabled:", formData.isPartiallyOwnEnabled);
     console.log("FORM DATA - Partial Ownership Config:", formData.partialOwnership);
-    
-    if (!marketplaceConfig || !usdtAddress || !address) {
-      console.error("Missing required configuration");
-      return;
-    }
     
     // Store form data for retry purposes
     setFormDataCache(formData);
@@ -718,12 +731,13 @@ export function useProptyoListing() {
         assetFloorPlan: formData.assetFloorPlan || ""
       };
 
-      // Step 1: Approve USDT if fee is enabled
-      if (marketplaceConfig && 
+      // Step 1: Approve USDT if fee is enabled and USDT address is available
+      if (usdtAddress && marketplaceConfig && 
           marketplaceConfig.feesEnabled && 
+          marketplaceConfig.listingFee && 
           marketplaceConfig.listingFee > BigInt(0)) {
         
-        console.log("Approving USDT:", usdtAddress);
+        console.log("Approving USDT using marketplace config:", usdtAddress);
         console.log("Fee amount:", marketplaceConfig.listingFee.toString());
         console.log("Registry address:", CONTRACTS.propytoRegistry);
         
@@ -747,8 +761,38 @@ export function useProptyoListing() {
         }
         
         console.log("Approval transaction confirmed");
+      } else if (usdtAddress) {
+        // Use default 10 USDT listing fee if marketplace config is not available
+        console.log("Using default 10 USDT listing fee");
+        const defaultFee = parseUnits("10", 18); // 10 USDT with 18 decimals
+        
+        console.log("Approving USDT with default fee:", usdtAddress);
+        console.log("Default fee amount:", defaultFee.toString());
+        console.log("Registry address:", CONTRACTS.propytoRegistry);
+        
+        // Send and monitor approval transaction with default fee
+        const approveReceipt = await sendAndMonitorTransaction(
+          async () => {
+            return await approveUSDTAsync({
+              address: usdtAddress as `0x${string}`,
+              abi: USDTABI,
+              functionName: 'approve',
+              args: [CONTRACTS.propytoRegistry, defaultFee]
+            });
+          },
+          'approve',
+          setApproveMonitor
+        );
+        
+        if (!approveReceipt) {
+          console.error("Approval transaction failed or was not confirmed");
+          return;
+        }
+        
+        console.log("Default fee approval transaction confirmed");
       } else {
-        // Skip approval if no fee
+        // Skip approval if no USDT address
+        console.warn("No USDT address available, skipping approval");
         updateTransactionStep('approve', 'success');
       }
       
@@ -1047,7 +1091,7 @@ export function useProptyoListing() {
     try {
       switch (failedStep) {
         case 'approve':
-          if (marketplaceConfig && usdtAddress) {
+          if (usdtAddress && marketplaceConfig && marketplaceConfig.listingFee) {
             await sendAndMonitorTransaction(
               async () => {
                 return await approveUSDTAsync({
@@ -1060,6 +1104,24 @@ export function useProptyoListing() {
               'approve',
               setApproveMonitor
             );
+          } else if (usdtAddress) {
+            // Use default 10 USDT fee for retry if marketplace config is not available
+            const defaultFee = parseUnits("10", 18); // 10 USDT with 18 decimals
+            await sendAndMonitorTransaction(
+              async () => {
+                return await approveUSDTAsync({
+                  address: usdtAddress as `0x${string}`,
+                  abi: USDTABI,
+                  functionName: 'approve',
+                  args: [CONTRACTS.propytoRegistry, defaultFee]
+                });
+              },
+              'approve',
+              setApproveMonitor
+            );
+          } else {
+            console.warn("Cannot retry approval: USDT address not available");
+            updateTransactionStep('approve', 'error', undefined, 'USDT token address not available');
           }
           break;
           

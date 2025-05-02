@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { PropertyData } from '@/hooks/usePropertyDetails';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Loader2, AlertCircle, CheckCircle, ExternalLink } from 'lucide-react';
+import { Loader2, AlertCircle, CheckCircle, ExternalLink, Wallet, AlertTriangle, ArrowRightLeft } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { formatCurrency } from '@/lib/utils';
 import { useChainId } from 'wagmi';
@@ -20,6 +20,9 @@ interface PurchaseModalProps {
   isError: boolean;
   error: Error | null;
   transactionHash?: string | null;
+  usdtBalance?: string;
+  formattedBalance?: string;
+  hasInsufficientBalance?: boolean;
 }
 
 export function PurchaseModal({
@@ -31,7 +34,10 @@ export function PurchaseModal({
   isSuccess,
   isError,
   error,
-  transactionHash
+  transactionHash,
+  usdtBalance,
+  formattedBalance,
+  hasInsufficientBalance
 }: PurchaseModalProps) {
   const [shareCount, setShareCount] = useState<number>(
     property.partialOwnership?.minSharePurchase 
@@ -47,6 +53,8 @@ export function PurchaseModal({
       ? property.partialOwnership.minSharePurchase 
       : '10'
   );
+  // Add internal state for balance status
+  const [isInsufficientBalance, setIsInsufficientBalance] = useState<boolean>(hasInsufficientBalance || false);
   
   // Auto-hide error after 5 seconds
   useEffect(() => {
@@ -80,6 +88,23 @@ export function PurchaseModal({
       });
     }
   }, [property]);
+  
+  // Calculate if balance is insufficient
+  useEffect(() => {
+    if (formattedBalance && totalCost) {
+      const balance = parseFloat(formattedBalance);
+      const cost = parseFloat(totalCost);
+      const isInsufficient = balance < cost;
+      
+      console.debug("[PurchaseModal] Balance check:", {
+        balance,
+        cost,
+        isInsufficient
+      });
+      
+      setIsInsufficientBalance(isInsufficient);
+    }
+  }, [formattedBalance, totalCost]);
   
   // Calculate the total cost based on share count or full property price
   useEffect(() => {
@@ -201,6 +226,56 @@ export function PurchaseModal({
               <span className="text-gray-400">Price:</span>
               <span className="text-white">${parseFloat(property.formattedPrice).toLocaleString()}</span>
             </div>
+          </div>
+          
+          {/* Wallet Balance Display */}
+          <div className="mb-4 p-3 bg-gray-800/80 rounded-lg border border-gray-700">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center">
+                <Wallet className="h-4 w-4 mr-2 text-blue-400" />
+                <h4 className="text-sm font-medium text-gray-300">Your USDT Balance</h4>
+              </div>
+              {formattedBalance ? (
+                <span className={`text-sm font-bold ${isInsufficientBalance ? 'text-red-400' : 'text-green-400'}`}>
+                  ${parseFloat(formattedBalance).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}
+                </span>
+              ) : (
+                <div className="h-4 w-16 bg-gray-700 animate-pulse rounded"></div>
+              )}
+            </div>
+            
+            {/* Balance Status Indicator */}
+            {formattedBalance && (
+              <div className={`flex items-center ${isInsufficientBalance ? 'text-red-400' : 'text-green-400'} text-xs p-1.5 rounded-md ${isInsufficientBalance ? 'bg-red-900/20' : 'bg-green-900/20'}`}>
+                {isInsufficientBalance ? (
+                  <>
+                    <AlertTriangle className="h-3 w-3 mr-1.5" />
+                    <span>Insufficient balance for this purchase</span>
+                  </>
+                ) : (
+                  <>
+                    <CheckCircle className="h-3 w-3 mr-1.5" />
+                    <span>Sufficient balance for this purchase</span>
+                  </>
+                )}
+              </div>
+            )}
+            
+            {/* Cost Comparison */}
+            {totalCost && formattedBalance && (
+              <div className="mt-2 text-xs text-gray-400">
+                <div className="flex justify-between items-center">
+                  <span>Required amount:</span>
+                  <span className="font-medium text-white">${parseFloat(totalCost).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}</span>
+                </div>
+                <div className="flex justify-between items-center mt-1">
+                  <span>After transaction:</span>
+                  <span className="font-medium text-white">
+                    ${Math.max(0, parseFloat(formattedBalance) - parseFloat(totalCost)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
           
           {/* Purchase type toggle */}
@@ -328,14 +403,16 @@ export function PurchaseModal({
           </button>
           <button
             onClick={handlePurchase}
-            disabled={isLoading || isSuccess}
-            className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold inline-flex items-center justify-center rounded-md h-10 py-2 px-4 disabled:opacity-50 disabled:pointer-events-none"
+            disabled={isLoading || isSuccess || isInsufficientBalance}
+            className={`${isInsufficientBalance ? 'bg-red-500 hover:bg-red-600' : 'bg-yellow-500 hover:bg-yellow-600'} text-black font-bold inline-flex items-center justify-center rounded-md h-10 py-2 px-4 disabled:opacity-50 disabled:pointer-events-none`}
           >
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Processing...
               </>
+            ) : isInsufficientBalance ? (
+              'Insufficient Balance'
             ) : isPurchasingEntireAsset ? (
               'Buy Property'
             ) : (

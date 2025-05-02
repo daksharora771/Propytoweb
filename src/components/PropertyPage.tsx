@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { usePropertyDetails, getAssetTypeName, getAssetStatusName, getAssetFurnishingName, getSubTypeName } from '@/hooks/usePropertyDetails';
 import { BiArea, BiHomeAlt, BiCalendar, BiBuildings } from 'react-icons/bi';
@@ -61,9 +61,34 @@ const OwnershipBanner = ({ property, userShares }: { property: any, userShares: 
 export function PropertyPage({ propertyId }: PropertyPageProps) {
   const [activeTab, setActiveTab] = useState("Overview");
   const [isPurchaseModalOpen, setIsPurchaseModalOpen] = useState(false);
-  const { property, isLoading, isError, error, purchaseProperty, purchaseState } = usePropertyDetails(propertyId);
+  const { 
+    property, 
+    isLoading, 
+    isError, 
+    error, 
+    purchaseProperty, 
+    purchaseState,
+    checkUSDTBalance 
+  } = usePropertyDetails(propertyId);
   const { address } = useAccount();
   const chainId = useChainId();
+  const [balanceData, setBalanceData] = useState<{
+    balance: string;
+    formattedBalance: string;
+    hasInsufficientBalance?: boolean;
+  } | null>(null);
+  
+  // Effect to check balance when modal opens
+  useEffect(() => {
+    const fetchBalance = async () => {
+      if (isPurchaseModalOpen && address) {
+        const balance = await checkUSDTBalance();
+        setBalanceData(balance);
+      }
+    };
+    
+    fetchBalance();
+  }, [isPurchaseModalOpen, address, checkUSDTBalance]);
   
   // Handle loading state
   if (isLoading) {
@@ -152,6 +177,9 @@ export function PropertyPage({ propertyId }: PropertyPageProps) {
           isError={purchaseState.isError}
           error={purchaseState.error}
           transactionHash={purchaseState.transactionHash}
+          usdtBalance={balanceData?.balance}
+          formattedBalance={balanceData?.formattedBalance}
+          hasInsufficientBalance={balanceData?.hasInsufficientBalance}
         />
       )}
       

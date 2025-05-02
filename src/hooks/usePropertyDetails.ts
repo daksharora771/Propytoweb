@@ -74,6 +74,10 @@ export interface PurchaseResult {
   error: Error | null;
   transactionHash: string | null;
   reset: () => void;
+  // Add balance information
+  usdtBalance?: string;
+  formattedBalance?: string;
+  hasInsufficientBalance?: boolean;
 }
 
 export interface UsePropertyDetailsResult {
@@ -84,6 +88,7 @@ export interface UsePropertyDetailsResult {
   refetch: () => void;
   purchaseProperty: (shareCount?: number) => Promise<PurchaseResult>;
   purchaseState: PurchaseResult;
+  checkUSDTBalance: () => Promise<{ balance: string, formattedBalance: string, hasInsufficientBalance?: boolean }>;
 }
 
 // Add a logging utility that works with any type
@@ -612,15 +617,16 @@ export function usePropertyDetails(propertyId: number): UsePropertyDetailsResult
   const purchaseProperty = async (shareCount?: number): Promise<PurchaseResult> => {
     if (!property || !walletClient || !publicClient) {
       const error = new Error("Cannot purchase: wallet not connected or property data unavailable");
-      setPurchaseState({
+      const result = {
         isLoading: false,
         isSuccess: false,
         isError: true,
         error,
         transactionHash: null,
         reset: purchaseState.reset
-      });
-      return { ...purchaseState, isError: true, error };
+      };
+      setPurchaseState(result);
+      return result;
     }
     
     try {
@@ -657,6 +663,47 @@ export function usePropertyDetails(propertyId: number): UsePropertyDetailsResult
       
       // Get current wallet address
       const walletAddress = walletClient.account.address;
+      
+      // Check USDT balance first
+      const usdtBalance = await publicClient.readContract({
+        address: CONTRACTS.usdtToken as `0x${string}`,
+        abi: ERC20ABI,
+        functionName: 'balanceOf',
+        args: [walletAddress]
+      }) as bigint;
+      
+      // Format the balance for display
+      const formattedBalance = formatUnits(usdtBalance, 18);
+      
+      console.info("[PropertyPurchase] USDT balance check:", {
+        usdtBalance: usdtBalance.toString(),
+        formattedBalance,
+        requiredAmount: totalCost.toString(),
+        formattedRequiredAmount: formatUnits(totalCost, 18),
+        isSufficient: usdtBalance >= totalCost,
+        walletAddress
+      });
+      
+      // Check if balance is sufficient
+      const hasInsufficientBalance = usdtBalance < totalCost;
+      
+      if (hasInsufficientBalance) {
+        const error = new Error(`Insufficient USDT balance. You have ${formattedBalance} USDT but need ${formatUnits(totalCost, 18)} USDT.`);
+        const insufficientResult = {
+          isLoading: false,
+          isSuccess: false,
+          isError: true,
+          error,
+          transactionHash: null,
+          reset: purchaseState.reset,
+          usdtBalance: usdtBalance.toString(),
+          formattedBalance,
+          hasInsufficientBalance
+        };
+        setPurchaseState(insufficientResult);
+        toast.error("Insufficient USDT balance for this purchase");
+        return insufficientResult;
+      }
       
       // First check if we already have sufficient allowance
       const currentAllowance = await publicClient.readContract({
@@ -730,15 +777,18 @@ export function usePropertyDetails(propertyId: number): UsePropertyDetailsResult
       console.info("[PropertyPurchase] Purchase confirmed:", purchaseReceipt);
       
       // Update purchase state with success
-      const result = {
+      const successResult = {
         isLoading: false,
         isSuccess: true,
         isError: false,
         error: null,
         transactionHash: purchaseTx,
-        reset: purchaseState.reset
+        reset: purchaseState.reset,
+        usdtBalance: usdtBalance.toString(),
+        formattedBalance,
+        hasInsufficientBalance: false
       };
-      setPurchaseState(result);
+      setPurchaseState(successResult);
       
       // Automatically refresh property data
       refetch();
@@ -750,7 +800,7 @@ export function usePropertyDetails(propertyId: number): UsePropertyDetailsResult
           : `Successfully purchased ${sharesToBuy} shares!`
       );
       
-      return result;
+      return successResult;
     } catch (err) {
       console.error("[PropertyPurchase] Error during purchase:", err);
       
@@ -768,7 +818,7 @@ export function usePropertyDetails(propertyId: number): UsePropertyDetailsResult
       
       toast.error(errorMessage);
       
-      const result = {
+      const errorResult = {
         isLoading: false,
         isSuccess: false,
         isError: true,
@@ -776,8 +826,41 @@ export function usePropertyDetails(propertyId: number): UsePropertyDetailsResult
         transactionHash: null,
         reset: purchaseState.reset
       };
-      setPurchaseState(result);
-      return result;
+      setPurchaseState(errorResult);
+      return errorResult;
+    }
+  };
+  
+  // Add new function to check USDT balance
+  const checkUSDTBalance = async (): Promise<{ balance: string, formattedBalance: string, hasInsufficientBalance?: boolean }> => {
+    if (!publicClient || !userAddress) {
+      return { balance: "0", formattedBalance: "0" };
+    }
+    
+    try {
+      const usdtBalance = await publicClient.readContract({
+        address: CONTRACTS.usdtToken as `0x${string}`,
+        abi: ERC20ABI,
+        functionName: 'balanceOf',
+        args: [userAddress]
+      }) as bigint;
+      
+      // Format the balance for display
+      const formattedBalance = formatUnits(usdtBalance, 18);
+      
+      console.info("[PropertyDetails] USDT balance check:", {
+        userAddress,
+        balance: usdtBalance.toString(),
+        formattedBalance
+      });
+      
+      return { 
+        balance: usdtBalance.toString(), 
+        formattedBalance 
+      };
+    } catch (err) {
+      console.error("[PropertyDetails] Failed to check USDT balance:", err);
+      return { balance: "0", formattedBalance: "0" };
     }
   };
   
@@ -788,7 +871,8 @@ export function usePropertyDetails(propertyId: number): UsePropertyDetailsResult
     error,
     refetch,
     purchaseProperty,
-    purchaseState
+    purchaseState,
+    checkUSDTBalance
   };
 }
 
