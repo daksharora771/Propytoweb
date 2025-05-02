@@ -5,8 +5,9 @@ import { useAvailableProperties } from '@/hooks/useAvailableProperties';
 import { PropertyCard } from '@/components/PropertyCard';
 import { Skeleton } from '@/components/ui/skeleton';
 import { HomeIcon, ArrowUpDownIcon, AlignJustifyIcon, Grid2X2Icon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+// import  from '@/components/ui/button';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 export default function PropertiesPage() {
   const { properties, isLoading, isError } = useAvailableProperties();
