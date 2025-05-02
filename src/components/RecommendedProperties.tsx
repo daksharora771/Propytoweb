@@ -1,73 +1,56 @@
 "use client";
 
-import PropertyCard from "./PropertyCard";
-import Home from '@/assets/images/home.svg';
-
-const properties = [
-  {
-    imageUrl: Home,
-    price: "45 L",
-    title: "5 BHK Independent House",
-    location: "Kuber Nagar 2, Katargam",
-    postedBy: "Posted by Owner",
-    postedTime: "3 months ago",
-  },
-  {
-    imageUrl: Home,
-    price: "47 L",
-    title: "5 BHK Independent House",
-    location: "Santosh Apartment, Katargam",
-    postedBy: "Posted by Owner",
-    postedTime: "1 week ago",
-  },
-  {
-    imageUrl: Home,
-    price: "60 L",
-    title: "5 BHK Independent House",
-    location: "Paras Society, Katargam",
-    postedBy: "Posted by Owner",
-    postedTime: "2 months ago",
-  },
-  {
-    imageUrl: Home,
-    price: "25 L",
-    title: "1 BHK Apartment",
-    location: "105 SAHYOG APARTMENT",
-    postedBy: "Posted by Owner",
-    postedTime: "1 month ago",
-  },
-  {
-    imageUrl: Home,
-    price: "60 L",
-    title: "5 BHK Independent House",
-    location: "Paras Society, Katargam",
-    postedBy: "Posted by Owner",
-    postedTime: "2 months ago",
-  },
-  {
-    imageUrl: Home,
-    price: "25 L",
-    title: "1 BHK Apartment",
-    location: "105 SAHYOG APARTMENT",
-    postedBy: "Posted by Owner",
-    postedTime: "1 month ago",
-  },
-];
+import { useState, useEffect } from 'react';
+import { PropertyCard } from "./PropertyCard";
+import { useAvailableProperties } from '@/hooks/useAvailableProperties';
+import { PropertyData } from '@/hooks/usePropertyDetails';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const RecommendedProperties = () => {
+  const { properties, isLoading, isError } = useAvailableProperties();
+  const [recommendedProperties, setRecommendedProperties] = useState<PropertyData[]>([]);
+
+  useEffect(() => {
+    if (properties.length > 0) {
+      // We can implement more advanced recommendation logic here in the future
+      // For now, just pick the latest properties
+      const filteredProperties = properties.slice(0, 3); // Get first 3 properties
+      setRecommendedProperties(filteredProperties);
+    }
+  }, [properties]);
+
   return (
     <section className="bg-black py-10 px-4 text-white">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-xl font-bold mb-2">Recommended Properties</h2>
         <p className="text-sm text-gray-400 mb-6">Curated especially for you</p>
         
+        {isError && (
+          <div className="text-red-500 mb-4">
+            Failed to load recommended properties. Please try again later.
+          </div>
+        )}
+        
         {/* Horizontal Scroll */}
         <div className="flex overflow-x-auto gap-6 pb-4 no-scrollbar">
-          {properties.map((property, index) => (
-            <div className="min-w-[250px] flex-shrink-0" key={index}>
-              <PropertyCard {...property} />
+          {isLoading ? (
+            // Loading skeletons
+            Array(3).fill(0).map((_, i) => (
+              <div className="min-w-[300px] h-[400px] flex-shrink-0" key={i}>
+                <div className="h-full rounded-md bg-slate-800/50 animate-pulse"></div>
+              </div>
+            ))
+          ) : recommendedProperties.length > 0 ? (
+            recommendedProperties.map((property) => (
+              <div className="min-w-[300px] flex-shrink-0" key={property.id}>
+                <PropertyCard property={property} />
+              </div>
+            ))
+          ) : (
+            <div className="min-w-full py-10 text-center text-gray-400">
+              No properties available at the moment.
             </div>
-          ))}
+          )}
         </div>
       </div>
     </section>

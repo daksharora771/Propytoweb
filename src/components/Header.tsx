@@ -3,9 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import Propyro from "@/assets/images/icon_logo.png";
-import Button from "./ui/Button";
-import { User } from "lucide-react";
+import { User, PlusCircle } from "lucide-react";
 import { useState, useEffect } from "react";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const Header = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -60,7 +60,7 @@ const Header = () => {
       style={{
         top: 0,
         left: 0,
-        right: 0
+        right: 0,
       }}
     >
       <div className="container mx-auto">
@@ -83,8 +83,17 @@ const Header = () => {
 
           {/* Right side */}
           <div className="w-1/2 3xl:w-1/4 text-right flex justify-end items-center gap-6 relative">
+            {/* List Property Button */}
+            <Link 
+              href="/list-property"
+              className="py-2 px-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-md font-medium transition-all duration-300 flex items-center gap-2"
+            >
+              <PlusCircle className="w-4 h-4" />
+              <span>List Property</span>
+            </Link>
+            
             {/* Connect Wallet Button */}
-            <Button label="Connect Wallet" onClick={() => ""} />
+            <ConnectButton />
 
             {/* User Icon */}
             <div className="relative">
@@ -103,18 +112,24 @@ const Header = () => {
                   onMouseLeave={() => setDropdownOpen(false)}
                   className="absolute right-0 mt-2 w-48 bg-gray-800 border border-gray-600 rounded-md shadow-lg z-50 transform transition-all duration-300 ease-in-out"
                 >
-                  <a
+                  <Link
                     href="/profile"
                     className="block px-4 py-2 text-left text-gray-200 hover:bg-[#FFD700]/20 hover:text-white transition-colors duration-200"
                   >
                     Profile Page
-                  </a>
-                  <a
+                  </Link>
+                  <Link
+                    href="/list-property"
+                    className="block px-4 py-2 text-left text-gray-200 hover:bg-[#FFD700]/20 hover:text-white transition-colors duration-200"
+                  >
+                    List Property
+                  </Link>
+                  <Link
                     href="/mypropyto"
                     className="block px-4 py-2 text-left text-gray-200 hover:bg-[#FFD700]/20 hover:text-white transition-colors duration-200"
                   >
                     My Propyto
-                  </a>
+                  </Link>
                   <button
                     onClick={() => console.log("Logout clicked")}
                     className="w-full cursor-pointer text-left px-4 py-2 text-gray-200 hover:bg-[#FFD700]/20 hover:text-white transition-colors duration-200"

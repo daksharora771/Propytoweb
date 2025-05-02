@@ -9,20 +9,21 @@ import {
   ChevronDown,
   CheckSquare,
   Square,
+  PlusCircle,
+  ArrowRight
 } from "lucide-react";
-import Button from "./ui/Button";
-import Buy from "@/assets/images/buy.jpg";
-import Rent from "@/assets/images/rent.jpg";
-import Sell from "@/assets/images/sell.jpg";
 
 const HeroSection = () => {
   const navItems = [
-    { icons: Buy, name: "Buy", href: "/buy" },
-    { icons: Rent, name: "Rent", href: "/rent" },
-    { icons: Sell, name: "Sell", href: "/sell" },
+    { 
+      icon: <PlusCircle className="w-4 h-4 mr-2" />, 
+      name: "List Property", 
+      description: "Tokenize your real estate",
+      href: "/list-property" 
+    }
   ];
 
-  const [activeTab, setActiveTab] = useState("Buy");
+  const [activeTab, setActiveTab] = useState("List Property");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -64,32 +65,31 @@ const HeroSection = () => {
       <div className="hero-banner opacity-55"></div>
       <div className="w-full max-w-5xl">
         <div className="rounded-xl bg-gradient-to-b from-black/80 via-gray-900/90 to-black/80 p-4 3xl:p-6">
-          {/* Tabs */}
-          <div className="bg-gray-900/60 backdrop-blur-sm rounded-t-lg border-b border-[#b79249] px-4 3xl:px-6 pt-2">
-            <nav>
-              <ul className="flex flex-wrap -mb-px text-sm font-medium text-center">
-                {navItems.map((item) => (
-                  <li key={item.name} className="mr-2 flex">
-                    <Link
-                      href={item.href}
-                      onClick={() => setActiveTab(item.name)}
-                      className={`inline-block p-4 border-b-2 rounded-t-lg transition-colors duration-300 ${activeTab === item.name
-                        ? "text-[#e5a526] border-[#e5a526] font-semibold"
-                        : "text-gray-400 border-transparent hover:text-[#e5a526] hover:border-[#e5a526]"
-                        }`}
-                    >
-                      {item.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
+          {/* Simplified Header */}
+          <div className="text-center mb-8">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3">
+              <span className="text-[#e5a526]">Tokenize</span> Your Property
+            </h1>
+            <p className="text-gray-300 max-w-2xl mx-auto">
+              List your real estate on the blockchain and enable fractional ownership through our secure tokenization platform
+            </p>
           </div>
 
-          {/* Search Area */}
-          <div className="bg-gradient-to-br from-black via-gray-900 to-black border border-[#b79249] rounded-b-xl p-4 3xl:p-6 mt-1 backdrop-blur-sm">
+          {/* Tab - Single Option */}
+          <div className="flex justify-center mb-6">
+            <Link
+              href="/list-property"
+              className="inline-flex items-center px-8 py-4 border-2 border-[#e5a526] rounded-lg bg-gray-900/60 text-[#e5a526] font-semibold hover:bg-[#e5a526]/10 transition-all duration-300 transform hover:scale-105"
+            >
+              <PlusCircle className="w-5 h-5 mr-2" />
+              <span>Start Listing Now</span>
+            </Link>
+          </div>
+
+          {/* Search Area - Enhanced */}
+          <div className="bg-gradient-to-br from-black via-gray-900 to-black border border-[#b79249] rounded-xl p-4 3xl:p-6 backdrop-blur-sm">
             <div className="flex flex-col 3xl:flex-row 3xl:items-center gap-4 relative overflow-visible z-10">
-              {/* Dropdown */}
+              {/* Property Type Filter */}
               <div className="relative w-full 3xl:w-60 z-20" ref={dropdownRef}>
                 <button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -98,7 +98,7 @@ const HeroSection = () => {
                   <span className="truncate pr-1 text-sm">
                     {selectedTypes.length > 0
                       ? `${selectedTypes.length} Selected`
-                      : "All Residential"}
+                      : "All Property Types"}
                   </span>
                   <ChevronDown
                     className={`w-4 h-4 text-[#e5a526] transition-transform duration-300 ${isDropdownOpen ? "rotate-180" : ""}`}
@@ -134,7 +134,7 @@ const HeroSection = () => {
                       <span className="text-xs text-blue-300">
                         Looking for commercial properties?{" "}
                         <Link
-                          href="/commercial"
+                          href="/list-property?type=commercial"
                           className="text-[#e5a526] hover:text-[#b79249] hover:underline transition-colors duration-200"
                         >
                           Click here
@@ -162,7 +162,7 @@ const HeroSection = () => {
                 <input
                   type="search"
                   className="block w-full p-2.5 pl-10 text-sm text-blue-100 bg-gray-900 border border-blue-500/20 rounded-md focus:ring-amber-400 focus:border-amber-200 placeholder-[#e5a526] shadow-md"
-                  placeholder="Search Location or Property..."
+                  placeholder="Search for your property location..."
                 />
                 <button
                   type="button"
@@ -178,16 +178,21 @@ const HeroSection = () => {
                 </button>
               </div>
 
-              {/* Search Button */}
+              {/* List Property Button */}
               <div className="w-full 3xl:w-auto">
-                <Button label="Search" onClick={() => ""} />
+                <Link 
+                  href="/list-property"
+                  className="w-full 3xl:w-auto cursor-pointer flex items-center justify-center p-3 relative border-white rounded-lg bg-gradient-to-b from-[#bc9b54] to-[#b79249] hover:from-[#e5a526] hover:to-custom-dark-end text-white transition-all duration-300 ease-in-out transform hover:scale-105"
+                >
+                  <span className="mr-2">List Property</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
               </div>
             </div>
           </div>
         </div>
       </div>
     </section>
-
   );
 };
 
