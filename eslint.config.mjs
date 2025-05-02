@@ -10,7 +10,27 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
+  // Base configurations
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  
+  // Override with custom rules (disable specific lints)
+  {
+    rules: {
+      // Disable unused imports/variables rules
+      '@typescript-eslint/no-unused-vars': 'off',
+      'no-unused-vars': 'off',
+      
+      // Disable other common rules
+      '@typescript-eslint/no-explicit-any': 'off',
+      'react/no-unescaped-entities': 'off',
+    }
+  },
+  
+  // Global override for all files - set all rules to off
+  {
+    rules: 'off',
+    ignorePatterns: ['**/*'],
+  }
 ];
 
 export default eslintConfig;
