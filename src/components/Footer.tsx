@@ -12,7 +12,7 @@ const Footer = () => {
       </div>
       <div className="flex flex-col 3xl:flex-row items-center justify-between gap-4">
         <p className="text-sm text-gray-400">
-          © 2024 <span className="text-[#e5a526]">Propyto</span>. All rights
+          © 2025 <span className="text-[#e5a526]">Propyto</span>. All rights
           reserved - Info Edge (India) Ltd.
         </p>
         <div className="flex gap-3">

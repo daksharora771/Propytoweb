@@ -288,9 +288,9 @@ const DealerDetailsTab = () => (
         <h3 className="text-blue-400 text-lg font-semibold">Satish Vishwakarma</h3>
         <p className="text-sm text-gray-400">GJ5 Property</p>
 
-        <button className="bg-green-500 text-white font-bold px-6 py-2 rounded-md mt-2">
+        {/* <button className="bg-green-500 text-white font-bold px-6 py-2 rounded-md mt-2">
           View Phone Number
-        </button>
+        </button> */}
 
         <div className="text-green-400 text-xs border border-green-400 px-2 py-0.5 rounded mt-2">
           RERA REGISTERED

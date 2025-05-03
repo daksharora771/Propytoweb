@@ -87,9 +87,9 @@ const HeroSection = () => {
           </div>
 
           {/* Search Area - Enhanced */}
-          <div className="bg-gradient-to-br from-black via-gray-900 to-black border border-[#b79249] rounded-xl p-4 3xl:p-6 backdrop-blur-sm">
+          {/* <div className="bg-gradient-to-br from-black via-gray-900 to-black border border-[#b79249] rounded-xl p-4 3xl:p-6 backdrop-blur-sm">
             <div className="flex flex-col 3xl:flex-row 3xl:items-center gap-4 relative overflow-visible z-10">
-              {/* Property Type Filter */}
+             
               <div className="relative w-full 3xl:w-60 z-20" ref={dropdownRef}>
                 <button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -153,8 +153,6 @@ const HeroSection = () => {
                   </div>
                 )}
               </div>
-
-              {/* Search Input */}
               <div className="flex-grow relative w-full">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                   <Search className="w-5 h-5 text-[#e5a526]" />
@@ -178,7 +176,6 @@ const HeroSection = () => {
                 </button>
               </div>
 
-              {/* List Property Button */}
               <div className="w-full 3xl:w-auto">
                 <Link 
                   href="/list-property"
@@ -189,7 +186,7 @@ const HeroSection = () => {
                 </Link>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </section>

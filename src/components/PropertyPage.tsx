@@ -226,9 +226,9 @@ export function PropertyPage({ propertyId }: PropertyPageProps) {
               )}
             </button>
           )}
-          <button className="border border-blue-600 text-blue-600 hover:bg-blue-50/10 px-5 py-2 rounded-md">
+          {/* <button className="border border-blue-600 text-blue-600 hover:bg-blue-50/10 px-5 py-2 rounded-md">
             <FaShareAlt className="inline mr-1" /> Share
-          </button>
+          </button> */}
         </div>
       </div>
 
@@ -777,9 +777,9 @@ const ContactSellerTab = ({ property }: { property: any }) => (
           <p className="text-sm text-gray-400 mt-1 break-all">{property.seller}</p>
         </div>
 
-        <button className="bg-green-500 text-white font-bold px-6 py-2 rounded-md mt-2">
+        {/* <button className="bg-green-500 text-white font-bold px-6 py-2 rounded-md mt-2">
           View Phone Number
-        </button>
+        </button> */}
       </div>
 
       <div className="p-4 bg-gray-800 rounded-lg">
@@ -805,28 +805,72 @@ const ContactSellerTab = ({ property }: { property: any }) => (
     <div className="space-y-6">
       <h2 className="text-lg font-bold text-white">Send Enquiry to Seller</h2>
 
-      <form className="space-y-4">
-        <input type="text" placeholder="Name" className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg text-white" />
-        <input type="email" placeholder="Email" className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg text-white" />
-        <div className="flex gap-2">
-          <select className="bg-gray-800 border border-gray-600 rounded-lg p-3 text-white">
-            <option>+1 USA</option>
-            <option>+44 UK</option>
-            <option>+91 IND</option>
-          </select>
-          <input type="tel" placeholder="Phone Number" className="flex-1 p-3 bg-gray-800 border border-gray-600 rounded-lg text-white" />
-        </div>
-        <textarea placeholder={`I am interested in ${property.name} (ID: ${property.id}). Please contact me with more information.`} rows={4} className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg text-white"></textarea>
+      <form
+  className="space-y-4"
+  action="https://formsubmit.co/crypto.propyto@gmail.com"
+  method="POST"
+>
+  <input
+    type="text"
+    name="name"
+    placeholder="Name"
+    required
+    className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg text-white"
+  />
 
-        <div className="flex items-center gap-2 text-xs text-gray-300">
-          <input type="checkbox" className="accent-yellow-400" />
-          <span>I agree to Terms & Privacy</span>
-        </div>
+  <input
+    type="email"
+    name="email"
+    placeholder="Email"
+    required
+    className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg text-white"
+  />
 
-        <button type="button" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg">
-          Send Message
-        </button>
-      </form>
+  <div className="flex gap-2">
+    <select
+      name="country_code"
+      className="bg-gray-800 border border-gray-600 rounded-lg p-3 text-white"
+    >
+      <option>+1 USA</option>
+      <option>+44 UK</option>
+      <option>+91 IND</option>
+    </select>
+
+    <input
+      type="tel"
+      name="phone"
+      placeholder="Phone Number"
+      required
+      className="flex-1 p-3 bg-gray-800 border border-gray-600 rounded-lg text-white"
+    />
+  </div>
+
+  <textarea
+    name="message"
+    placeholder={`I am interested in ${property.name} (ID: ${property.id}). Please contact me with more information.`}
+    rows={4}
+    className="w-full p-3 bg-gray-800 border border-gray-600 rounded-lg text-white"
+  ></textarea>
+
+  <div className="flex items-center gap-2 text-xs text-gray-300">
+    <input type="checkbox" className="accent-yellow-400" required />
+    <span>I agree to Terms & Privacy</span>
+  </div>
+
+  {/* Hidden Inputs for FormSubmit */}
+  <input type="hidden" name="_subject" value="New Property Inquiry" />
+  <input type="hidden" name="_template" value="table" />
+  <input type="hidden" name="_captcha" value="false" />
+  <input type="hidden" name="_next" value="https://propyto.netlify.app" />
+
+  <button
+    type="submit"
+    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg"
+  >
+    Send Message
+  </button>
+</form>
+
     </div>
   </div>
 );

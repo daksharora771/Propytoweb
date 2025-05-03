@@ -112,24 +112,14 @@ const Header = () => {
                   onMouseLeave={() => setDropdownOpen(false)}
                   className="absolute right-0 mt-2 w-48 bg-gray-800 border border-gray-600 rounded-md shadow-lg z-50 transform transition-all duration-300 ease-in-out"
                 >
-                  <Link
-                    href="/profile"
-                    className="block px-4 py-2 text-left text-gray-200 hover:bg-[#FFD700]/20 hover:text-white transition-colors duration-200"
-                  >
-                    Profile Page
-                  </Link>
+
                   <Link
                     href="/list-property"
                     className="block px-4 py-2 text-left text-gray-200 hover:bg-[#FFD700]/20 hover:text-white transition-colors duration-200"
                   >
                     List Property
                   </Link>
-                  <Link
-                    href="/mypropyto"
-                    className="block px-4 py-2 text-left text-gray-200 hover:bg-[#FFD700]/20 hover:text-white transition-colors duration-200"
-                  >
-                    My Propyto
-                  </Link>
+
                   <button
                     onClick={() => console.log("Logout clicked")}
                     className="w-full cursor-pointer text-left px-4 py-2 text-gray-200 hover:bg-[#FFD700]/20 hover:text-white transition-colors duration-200"

@@ -12,14 +12,12 @@ const AboutContent = () => {
         Introducing <span className="text-[#e5a526]">Propyto</span> and our
         mission to revolutionize the real estate industry
       </h2>
+      <p className="mb-3">
+      Real estate. Reimagined as NFTs. Fractional ownership, global access, true transparency. Buy, rent, or invest—right from your wallet. A smarter way to enter the property market is on its way.
+
+      </p>
       <p className="">
-        &quot;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-        velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-        occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-        mollit anim id est laborum.&quot;
+      Every transaction on Propyto is secured by blockchain technology, creating an immutable record of ownership that can't be altered or disputed.
       </p>
     </div>
   );
